@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <link rel="stylesheet" href="style/background.css"></link>
+        <title>Minha Sala</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menuUsuario.xhtml"/>
+        
+        <b:form id="formindexusuario">
+
+            <b:panel title="# Salas disponíveis para reserva">
+
+                <b:panelGrid columns="4">
+
+                    <c:forEach var="item" items="#{sController.readAll()}" end="3">
+
+                        <b:panel title="Sala #{item.nome}">
+
+                            <b:panelGrid columns="1">                             
+                                <h:outputText value="# Localização:"/>
+                                <h:outputText value="#{item.localizacao}"/><br/>
+
+                                <h:outputText value="# Tipo:"/>
+                                <h:outputText value="#{item.tipo}"/><br/>
+                                
+                                <h:outputText value="# Capacidade:"/>
+                                <h:outputText value="#{item.capacidade}"/><br/>
+                                
+                                <h:outputText value="# Status:"/>
+                                <h:outputText value="#{item.status}"/>
+                            </b:panelGrid>
+
+                            <b:commandButton value="Reservar" oncomplete="$('.modaloferta').modal()" ajax="true" update=":formindexusuario:modalOferta">
+                                <f:setPropertyActionListener target="#{sController.selecionado}" value="#{item}"/>
+                            </b:commandButton>
+                        </b:panel>
+
+                    </c:forEach>
+
+                </b:panelGrid>
+
+                <b:commandLink value="Ver todos as salas" action="apresentasala.xhtml"/>
+
+            </b:panel>
+            
+            
+            
+            <b:modal id="modalOferta" title="Informações da reserva" class="modaloferta">
+
+                <b:panelGrid columns="2">
+
+                    <h:outputText value="# Disciplia:"/>
+                    <b:inputText value="#{disciplina}"/>
+                    
+                    <h:outputText value="# Dia:"/>
+                    <b:inputText value="#{dia}"/>
+                    
+                    <h:outputText value="# Hora:"/>
+                    <b:inputText value="#{hora}"/>
+                    
+                    <h:outputText value="# Duração:"/>
+                    <b:inputText value="#{duracao}"/>
+                    
+
+                </b:panelGrid>
+
+                <b:commandButton value="Confirmar reserva" action="#{aulaController
+                    .insertAula(disciplina, dia, hora, duracao)}"/>
+                <b:button value="Cancelar" dismiss="modal"/>
+
+            </b:modal>
+            
+            <b:modal id="modalPedido" title="informações do pedido" class="modalpedido">
+
+                <b:panelGrid columns="2">
+
+                    <h:outputText value="Quantidade"/>
+                    <b:inputText value="#{quantidade}"/>
+
+
+                </b:panelGrid>
+
+                <b:commandButton value="Pedir" action="#{pedidoController.inserir(quantidade)}"/>
+                <b:button value="cancelar" dismiss="modal"/>
+
+            </b:modal>
+            
+            
+            
+        </b:form>
+    </h:body>
+</html>
+

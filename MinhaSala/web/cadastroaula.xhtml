@@ -1,0 +1,98 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" href="style/background.css"></link>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        
+        <ui:include src="menuUsuario.xhtml"/>
+        
+        <h:form id="idFormCadastro">
+            <p:panelGrid columns="2"> 
+                
+                <h:outputText value="# Disciplina"/>
+                <p:inputText id="idDisciplina" value="#{aController.aulaCadastrada.disciplina}" required="true"/>
+
+                
+                <h:outputText value="# Dia"/>
+                <p:inputText id="idDia" value="#{aController.aulaCadastrada.dia}" required="true"/>
+                
+                
+                <h:outputText value="# Hora"/>
+                <p:inputText id="idHora" value="#{aController.aulaCadastrada.hora}"/>
+                
+                
+                <h:outputText value="# Duração:"/>
+                <p:inputText id="idDuracao" value="#{aController.aulaCadastrada.duracao}"/>   
+                
+                <h:outputText value="# Sala:"/>
+                <b:selectOneMenu value="#{aController.aulaCadastrada.sala}" required="true" labelColMd="4">
+                    <f:selectItem itemLabel="Selecione a sala" itemValue="" />
+                    <f:selectItems value="#{sController.readAll()}" var="item" itemValue="#{item}" itemLabel="#{item.nome}" />
+                </b:selectOneMenu>
+                
+                <h:outputText value="# Equipamento:"/>
+                <b:dataTable value="#{eController.readAll()}"
+                            var="equipamento"
+                            customOptions="'language':{select:{'rows': { '_': '%d filas elegido', '0': '','1': '%d fila elegido'}}}"
+                            lang="es">
+                    <b:dataTableColumn selection-mode="multiple" />
+                    <b:dataTableColumn value="#{equipamento.nome}" label="Nome"/>
+                    <b:dataTableColumn value="#{equipamento.marca}" label="Marca"/>
+                    <b:dataTableColumn value="#{equipamento.tipo}" label="Tipo"/>
+                    <b:dataTableColumn value="#{equipamento.utilidade}" label="Utilidade"/>                    
+                    <b:column>
+                        <b:commandButton value="+" ajax="true" oncomplete="$('.modalaltera').modal()">
+                            <f:setPropertyActionListener target="#{aController.selecionado}" value="#{equipamento}"/>
+                        </b:commandButton>
+                    </b:column>
+                </b:dataTable> 
+                
+                <b:selectOneMenu value="#{equipamento}" required="true">
+                    <f:selectItem itemLabel="Selecione o equipamento" itemValue="" />
+                    <f:selectItems value="#{eController.readAll()}" var="equipamento" itemValue="#{equipamento}" itemLabel="#{equipamento.nome}" />
+                </b:selectOneMenu>
+
+                <b:commandButton ajax="true" value="Adicionar equipamento" col-md="12" 
+                                 update=":idFormCadastro:panelEquipamento" action="#{aController.inserirEquipamento(equipamento)}"/>
+            </p:panelGrid>
+            
+            <p:panelGrid id="panelEquipamento" columns="2" class="panelequipamento">
+                <ui:repeat value="#{aController.aulaSelecionada.equipamentos}" var="itemequipamento" id="listaEquipamentos">
+                    <b:panelGrid columns="1">
+                        <h:outputText value="#{itemequipamento.nome}"/>
+                    </b:panelGrid>
+                </ui:repeat>
+            </p:panelGrid>    
+
+            <!--CONFIRMAÇÃO DO CADASTRO DE AULA-->
+            <p:commandButton value="Cadastrar" action="#{aController.insertAula()}" update="idFormCadastro">
+                <p:confirm message="Deseja cadastrar a sala?"/>
+            </p:commandButton>
+            
+            <p:confirmDialog global="true">
+                <p:commandButton value="sim" styleClass="ui-confirmdialog-yes"/>
+                <p:commandButton value="não" styleClass="ui-confirmdialog-no"/>
+            </p:confirmDialog>
+                
+            <!--MODAL PARA INSERIR QUANTIDADE-->
+            <b:modal id="modalAltera" title="Atualizar dados do produto" class="modalaltera">
+                <b:panelGrid columns="2">
+                    <h:outputText value="Quantidade:"/>
+                    <b:inputText value="#{quantidade}"/>
+                </b:panelGrid>
+
+                <b:commandButton value="Reservar" action="#{aController.inserirEquipamento(quantidade)}" />
+            </b:modal>  
+            
+        </h:form>
+    </h:body>
+</html>
+

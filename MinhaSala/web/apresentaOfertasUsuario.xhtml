@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <link rel="stylesheet" href="style/background.css"></link>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+         <ui:include src="menuUsuario.xhtml"/>
+        <b:form id="formOfertasUsuario">
+
+            <h:outputText value="filtro por status do pedido"/><br/>
+            <b:radiobutton value="#{status}" ajax="true">
+                <p:ajax event="click" update=":formOfertasUsuario:painel"/>
+                <f:selectItem itemValue="" itemLabel="Tudo"/>
+                <f:selectItem itemValue="aberto" itemLabel="Pedidos em aberto"/>
+                <f:selectItem itemValue="encerrado" itemLabel="Pedidos encerrados"/>
+            </b:radiobutton>
+
+            <b:panel id="painel" title="Minhas Ofertas">
+                <c:choose>
+                    <c:when test="#{lController.logado.ofertas.size()!=0}">
+                        <b:panelGrid columns="4">
+
+                            <c:forEach var="item" items="#{lController.filterOfertasBy(status)}">
+
+                                <b:panel title="#{item.item.produto.nome}(#{item.realizados.size()})">
+
+                                    <b:panelGrid columns="1">
+                                        <h:outputText value="Preço"/>
+                                        <h:outputText value="#{item.item.preco}"/>
+
+                                        <h:outputText value="Quantidade disponível"/>
+                                        <h:outputText value="#{item.item.quantidade}"/>
+                                    </b:panelGrid>
+
+
+                                    <b:commandButton value="visualizar" ajax="true" oncomplete="$('.modaloferta').modal()" update=":formOfertasUsuario:modalOferta">
+                                        <f:setPropertyActionListener value="#{item}" target="#{aulaController.ofertaSelecionada}"/>
+                                    </b:commandButton>
+
+                                </b:panel>
+
+                            </c:forEach>
+
+                        </b:panelGrid>
+
+                    </c:when>
+                    <c:otherwise>
+                        <h:outputText value="Você ainda não ofereceu nenhum produto"/><br/>
+                    </c:otherwise>
+                </c:choose>
+            </b:panel>
+
+            <b:modal id="modalOferta" class="modaloferta" title="Minha Oferta">
+
+                <b:panelGrid columns="2">
+                    <h:outputText value="Nome do produto: "/>
+                    <h:outputText value="#{aulaController.ofertaSelecionada.item.produto.nome}"/>
+
+                    <h:outputText value="Marca do produto: "/>
+                    <h:outputText value="#{aulaController.ofertaSelecionada.item.produto.marca}"/>
+
+                    <h:outputText value="Preço: "/>
+                    <h:outputText value="#{aulaController.ofertaSelecionada.item.preco}"/>
+
+                    <h:outputText value="Quantidade: "/>
+                    <h:outputText value="#{aulaController.ofertaSelecionada.item.quantidade}"/>
+
+                    <h:outputText value="Data da oferta: "/>
+                    <h:outputText value="#{aulaController.ofertaSelecionada.data}"/>
+                </b:panelGrid>
+
+                <b:panel title="Pedidos Recebidos">
+                    <c:forEach var="item" items="#{aulaController.ofertaSelecionada.realizados}">
+
+                        <b:panelGrid columns="4">
+                            <h:outputText value="Quantidade:"/>
+                            <h:outputText value="#{item.item.quantidade}"/>
+                            <h:outputText value="Status"/>
+                            <h:outputText value="#{item.status}"/>
+                            <c:if test="#{item.status eq 'Pedido Realizado'}">
+                                <b:commandButton value="Encerrar Pedido" action="#{salaController.encerrarPedido()}">
+                                    <f:setPropertyActionListener value="#{item}" target="#{salaController.pedidoEncerrado}"/>
+                                </b:commandButton>
+                            </c:if>
+                        </b:panelGrid>
+
+                    </c:forEach>
+                </b:panel>
+            </b:modal>
+
+        </b:form>
+    </h:body>
+</html>
+

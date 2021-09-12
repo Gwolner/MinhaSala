@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <link rel="stylesheet" href="style/font-awesome-4.7/font-awesome/css/font-awesome.min.css"></link>
+        <title>Minha Sala</title>
+    </h:head>
+    <h:body>
+        
+        <b:growl id="gro" delay="4000"/>
+        
+        <b:form id="menuUsuario">       
+            <c:if test="#{lController.logado == null}">
+                <script>
+                    location.href = 'index.xhtml';
+                </script>
+            </c:if>
+            
+            <b:navBar brand="Home" brandHref="indexusuario.xhtml" fluid="true">
+                <b:navbarLinks>
+                    
+                    <b:navLink value="Professores" href="listaprofessores.xhtml" icon="vcard"></b:navLink>
+                    
+                    <b:dropMenu value="Salas" icon="book">
+                        <b:navCommandLink value="Nova sala" href="cadastrosala.xhtml" icon="unlock"></b:navCommandLink>  
+                        <b:navCommandLink value="Ver todas" href="apresentasala.xhtml" icon="lock"></b:navCommandLink>  
+                    </b:dropMenu>
+                    
+                    <b:dropMenu value="Equipamentos" icon="calendar">
+                        <b:navCommandLink value="Novo equipamento" href="cadastroequipamento.xhtml" icon="unlock"></b:navCommandLink>  
+                        <b:navCommandLink value="Ver todos" href="apresentaequipamentos.xhtml" icon="lock"></b:navCommandLink>  
+                    </b:dropMenu>
+                    
+                    <b:navLink value="Reservar aula" href="cadastroaula.xhtml" icon="book"></b:navLink>
+                     
+                    <b:navLink value="Abrir processo" href="manutencao.xhtml" icon="star"></b:navLink>
+                    
+                    <b:navLink value="Coordenação" href="manutencao.xhtml" icon="paste"></b:navLink>
+                    
+                    <b:navLink value="Ramais" href="manutencao.xhtml"></b:navLink>
+                    
+                    <b:navLink value="Sobre" href="manutencao.xhtml" icon="cogs"></b:navLink>   
+                </b:navbarLinks>
+                
+                <b:navbarLinks pull="right">
+                    <b:dropMenu value="#{lController.logado.nome}" icon="user">
+                        <b:navCommandLink value="Informações" action="InformacoesUsuario.xhtml" icon="ticket"></b:navCommandLink>  
+                        <b:navCommandLink value="Logout" action="#{lController.logout()}" icon="close"></b:navCommandLink>  
+                    </b:dropMenu>                    
+                </b:navbarLinks>
+                
+            </b:navBar>
+            
+            <b:jumbotron>
+                <h2 align="center">Olá!<br/>Bem vind@ professor(a) #{lController.logado.nome}!</h2>
+            </b:jumbotron>
+        </b:form>
+    </h:body>
+</html>
+
