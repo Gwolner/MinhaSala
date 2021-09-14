@@ -40,10 +40,6 @@ public class Aula {
 
     public Aula(){
         this.equipamentos = new ArrayList();
-        this.disciplina = "Nome da disciplina";
-        this.dia = "31/12/21";
-        this.hora = "0:00";
-        this.duracao = "0:45";
         this.status = "Agendada";
     }
     

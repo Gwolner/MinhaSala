@@ -6,6 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:b="http://bootsfaces.net/ui">
     <h:head>
+        <link rel="stylesheet" href="style/font-awesome-4.7.0/css/font-awesome.min.css"></link>
         <link rel="stylesheet" href="style/background.css"></link>
         <title>Minha Sala</title>
     </h:head>
@@ -14,7 +15,8 @@
         
         <b:form id="formIndex">
             <b:jumbotron>
-                <h2 align="center">Bem vind@ ao Minha Sala - Sistema para reserva de salas de aula</h2>
+                <h2 align="center"><i class="fa fa-address-book" aria-hidden="true"></i> Bem vind@ ao Minha Sala</h2>
+                <h4 align="center">Sistema para reserva de salas de aula</h4>
             </b:jumbotron>
             <b:panel style="width: 300px; left: 35%; position: relative">
                 <b:panelGrid columns="2">
@@ -25,7 +27,7 @@
                     <b:inputSecret value="#{senha}"/>
                 </b:panelGrid>
                 
-                <b:commandButton value="Logar" action="#{lController.logar(siape, senha)}"/><br/>
+                <b:commandButton value="Logar" action="#{lController.logar(siape, senha)}"><i class="fa fa-check" aria-hidden="true"></i></b:commandButton><br/><br/>
                 <b:commandLink value="Registrar" onclick="$('.modalcadastro').modal()"/><br/>
             </b:panel>
         </b:form>

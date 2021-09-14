@@ -1,0 +1,47 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:b="http://bootsfaces.net/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <link rel="stylesheet" href="style/background.css"></link>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:include src="menuUsuario.xhtml"/>
+        
+        <b:form id="formProdutosUsuario">            
+            <b:panel id="painelProdutos" title="# Todas as minhas aulas">
+
+                <b:panelGrid columns="4">
+
+                    <c:forEach var="aula" items="#{aController.getMinhasAulas()}">
+
+                        <b:panel title="#{aula.disciplina}">
+
+                            <b:panelGrid columns="1">
+                                <h:outputText value="# Dia:"/>
+                                <h:outputText value="#{aula.dia}"/><br/>
+
+                                <h:outputText value="# Hora:"/>
+                                <h:outputText value="#{aula.hora}"/><br/>
+                                
+                                <h:outputText value="# Duração"/>
+                                <h:outputText value="#{aula.duracao}"/><br/>
+
+                                <h:outputText value="# Status:"/>
+                                <h:outputText value="#{aula.status}"/><br/>
+                            </b:panelGrid>                            
+                        </b:panel>
+                    </c:forEach>
+                </b:panelGrid>
+            </b:panel>            
+        </b:form>
+        
+    </h:body>
+</html>
+

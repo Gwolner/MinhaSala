@@ -7,6 +7,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
+        <link rel="stylesheet" href="style/font-awesome-4.7.0/css/font-awesome.min.css"></link>
         <link rel="stylesheet" href="style/background.css"></link>
         <title>Minha Sala</title>
     </h:head>
@@ -15,13 +16,13 @@
         
         <b:form id="formindexusuario">
 
-            <b:panel title="# Salas disponíveis para reserva">
+            <b:panel title="# Salas para reserva">
 
                 <b:panelGrid columns="4">
 
                     <c:forEach var="item" items="#{sController.readAll()}" end="3">
 
-                        <b:panel title="Sala #{item.nome}">
+                        <b:panel title="#{item.nome}">
 
                             <b:panelGrid columns="1">                             
                                 <h:outputText value="# Localização:"/>
@@ -34,11 +35,11 @@
                                 <h:outputText value="#{item.capacidade}"/><br/>
                                 
                                 <h:outputText value="# Status:"/>
-                                <h:outputText value="#{item.status}"/>
+                                <h:outputText value="#{item.status}"/><br/>
                             </b:panelGrid>
 
-                            <b:commandButton value="Reservar" oncomplete="$('.modaloferta').modal()" ajax="true" update=":formindexusuario:modalOferta">
-                                <f:setPropertyActionListener target="#{sController.selecionado}" value="#{item}"/>
+                            <b:commandButton value="Reservar" action="cadastroaula.xhtml">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
                             </b:commandButton>
                         </b:panel>
 
@@ -48,51 +49,66 @@
 
                 <b:commandLink value="Ver todos as salas" action="apresentasala.xhtml"/>
 
-            </b:panel>
+            </b:panel>   
             
-            
-            
-            <b:modal id="modalOferta" title="Informações da reserva" class="modaloferta">
+            <b:panel id="painelAulasAgendadas" title="# Aulas agendadas">
 
-                <b:panelGrid columns="2">
+                
+                <b:panelGrid columns="4">
 
-                    <h:outputText value="# Disciplia:"/>
-                    <b:inputText value="#{disciplina}"/>
-                    
-                    <h:outputText value="# Dia:"/>
-                    <b:inputText value="#{dia}"/>
-                    
-                    <h:outputText value="# Hora:"/>
-                    <b:inputText value="#{hora}"/>
-                    
-                    <h:outputText value="# Duração:"/>
-                    <b:inputText value="#{duracao}"/>
-                    
+                    <c:forEach var="aula" items="#{aController.getAulasAgendadas()}">
 
+                        <b:panel title="#{aula.disciplina}">
+
+                            <b:panelGrid columns="1">
+                                <h:outputText value="# Dia:"/>
+                                <h:outputText value="#{aula.dia}"/><br/>
+
+                                <h:outputText value="# Hora:"/>
+                                <h:outputText value="#{aula.hora}"/><br/>
+                                
+                                <h:outputText value="# Duração"/>
+                                <h:outputText value="#{aula.duracao}"/><br/>
+
+                                <h:outputText value="# Status:"/>
+                                <h:outputText value="#{aula.status}"/><br/>                            
+                                
+                            </b:panelGrid>    
+                            
+                            <b:commandButton value="Liberar sala" 
+                                             action="#{aController.liberarAula(aula)}">
+                                <i class="fa fa-unlock" aria-hidden="true"></i>
+                            </b:commandButton>
+                        </b:panel>
+                    </c:forEach>
                 </b:panelGrid>
+            </b:panel> 
+  
+            <b:panel id="painelAulasLiberadas" title="# Aulas realizadas">
 
-                <b:commandButton value="Confirmar reserva" action="#{aulaController
-                    .insertAula(disciplina, dia, hora, duracao)}"/>
-                <b:button value="Cancelar" dismiss="modal"/>
+                <b:panelGrid columns="4">
 
-            </b:modal>
-            
-            <b:modal id="modalPedido" title="informações do pedido" class="modalpedido">
+                    <c:forEach var="aula" items="#{aController.getAulasLiberadas()}">
 
-                <b:panelGrid columns="2">
+                        <b:panel title="#{aula.disciplina}">
 
-                    <h:outputText value="Quantidade"/>
-                    <b:inputText value="#{quantidade}"/>
+                            <b:panelGrid columns="1">
+                                <h:outputText value="# Dia:"/>
+                                <h:outputText value="#{aula.dia}"/><br/>
 
+                                <h:outputText value="# Hora:"/>
+                                <h:outputText value="#{aula.hora}"/><br/>
+                                
+                                <h:outputText value="# Duração"/>
+                                <h:outputText value="#{aula.duracao}"/><br/>
 
+                                <h:outputText value="# Status:"/>
+                                <h:outputText value="#{aula.status}"/><br/>
+                            </b:panelGrid>
+                        </b:panel>
+                    </c:forEach>
                 </b:panelGrid>
-
-                <b:commandButton value="Pedir" action="#{pedidoController.inserir(quantidade)}"/>
-                <b:button value="cancelar" dismiss="modal"/>
-
-            </b:modal>
-            
-            
+            </b:panel> 
             
         </b:form>
     </h:body>

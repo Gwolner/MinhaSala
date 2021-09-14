@@ -32,50 +32,26 @@
 
                             <b:panelGrid columns="1">
                                 <h:outputText value="# Localização:"/>
-                                <h:outputText value="#{item.localizacao}"/>
+                                <h:outputText value="#{item.localizacao}"/><br/>
 
                                 <h:outputText value="# Tipo:"/>
-                                <h:outputText value="#{item.tipo}"/>
+                                <h:outputText value="#{item.tipo}"/><br/>
                                 
                                 <h:outputText value="# Capacidade:"/>
-                                <h:outputText value="#{item.capacidade}"/>
+                                <h:outputText value="#{item.capacidade}"/><br/>
 
                                 <h:outputText value="# Status:"/>
-                                <h:outputText value="#{item.status}"/>
+                                <h:outputText value="#{item.status}"/><br/>
                             </b:panelGrid>
 
-                            <b:commandButton value="Reservar" oncomplete="$('.modaloferta').modal()" ajax="true" 
-                                             update=":formProdutosUsuario:modalOferta">
-                                <f:setPropertyActionListener target="#{aulaController.selecionado}" value="#{item}"/>
+                            <b:commandButton value="Reservar" action="cadastroaula.xhtml">
+                                <i class="fa fa-lock" aria-hidden="true"></i>
                             </b:commandButton>
                         </b:panel>
 
                     </c:forEach>
-
                 </b:panelGrid>
-
-            </b:panel>
-            
-            <b:modal id="modalOferta" title="informações da oferta" class="modaloferta">
-
-                <b:panelGrid columns="2">
-
-                    <h:outputText value="Preço da oferta"/>
-                    <b:inputText value="#{preco}"/>
-
-                    <h:outputText value="Quantidade"/>
-                    <b:inputText value="#{quantidade}"/>
-
-                    <h:outputText value="Observacoes"/>
-                    <b:inputTextarea value="#{obss}"/>
-
-                </b:panelGrid>
-
-                <b:commandButton value="Ofertar" action="#{ofertaController.insertOferta(preco, quantidade, obss)}"/>
-                <b:button value="cancelar" dismiss="modal"/>
-
-            </b:modal>
-            
+            </b:panel>            
         </b:form>
     </h:body>
 </html>
